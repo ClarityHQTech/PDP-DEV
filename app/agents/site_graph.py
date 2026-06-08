@@ -153,16 +153,19 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
         yield _sse("error", {"message": f"Crawl failed: {e}"})
         return
 
-    # Map Categories (Process top 10 categories to avoid massive crawls)
+    # Map Categories (Process top 4 categories, deduplicate by name)
     raw_categories = site_data.get("categories", [])
-    seen_urls = set()
+    seen_names = set()
     categories = []
     for c in raw_categories:
-        if c["url"] not in seen_urls:
-            seen_urls.add(c["url"])
+        name = c.get("name", "").strip().lower()
+        if name and name not in seen_names:
+            seen_names.add(name)
             categories.append(c)
     total_categories_found = len(categories)
     categories = categories[:4]
+    site_data["categories"] = categories
+    site_data["categories_found"] = total_categories_found
     total_products = site_data.get("total_products", 0)
 
     yield _sse("site_overview", {
