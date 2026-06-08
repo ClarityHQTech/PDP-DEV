@@ -216,7 +216,7 @@ window.App = function App() {
         // Mode A — transient crawl view
         setAllProducts([]); setSiteData(null);
         setView(VIEWS.MODE_A_CRAWLING);
-        let overviewSet = false;
+        let currentSiteData = null;
         const collectedProducts = [];
 
         await window.streamSSE('/api/v1/site/audit/stream', { url }, t, (event, data) => {
@@ -225,25 +225,16 @@ window.App = function App() {
             setAnalyzePct(data.pct  || 0);
             setAnalyzeSteps(s => [...s, data.message || ''].slice(-8));
           } else if (event === 'site_overview') {
-            setSiteData(data);
-            if (!overviewSet) {
-              overviewSet = true;
-              // Push overview into history so back goes to LANDING
-              navigateTo(VIEWS.MODE_A_OVERVIEW, { siteData: data, allProducts: [], currentUrl: url });
-            }
+            currentSiteData = data;
           } else if (event === 'product_done') {
             collectedProducts.push(data);
-            setAllProducts([...collectedProducts]);
           } else if (event === 'complete') {
-            const finalSite = { ...data };
-            setSiteData(finalSite);
-            // Replace the overview state so forward/back have final data
-            window.history.replaceState(
-              { view: VIEWS.MODE_A_OVERVIEW, siteData: finalSite,
-                allProducts: collectedProducts, currentUrl: url,
-                selectedCategory: null, modeBResult: null, activeTab: 'audit' },
-              ''
-            );
+            const finalSite = { ...currentSiteData, ...data };
+            navigateTo(VIEWS.MODE_A_OVERVIEW, { 
+              siteData: finalSite, 
+              allProducts: collectedProducts, 
+              currentUrl: url 
+            });
           } else if (event === 'error') {
             setView(VIEWS.LANDING);
           }
