@@ -302,6 +302,7 @@ def get_seo_system_prompt(category: str) -> str:
 Return this EXACT JSON structure (fill all fields, use null if not found).
 CRITICAL SCORING RULE: All individual component `score` fields MUST be scored on a scale of 0.0 to 10.0. The `overall_seo_score` MUST be on a scale of 0 to 100.
 CRITICAL LENGTH RULE: Your output MUST NOT exceed 4000 tokens. You MUST STRICTLY limit ALL arrays (especially `recommendations`, `issues`, `quick_wins`, `brand_compliance.issues`) to a MAXIMUM of 2 items. Limit ALL string values to 1 short sentence (under 15 words). If you output more than 2 items in any array, the system will CRASH.
+For each recommendation, write an `example` field showing exactly what the fixed copy/code should look like — specific to this product's category.
 {{
   "page_title": string, "page_type": "product|category|homepage|other",
   "detected_platform": "shopify|woocommerce|magento|bigcommerce|custom",
@@ -326,7 +327,7 @@ CRITICAL LENGTH RULE: Your output MUST NOT exceed 4000 tokens. You MUST STRICTLY
     "persona_alignment": [{{"persona": string, "match_percentage": float, "reason": string}}]
   }},
   "critical_issues": [string], "quick_wins": [string],
-  "recommendations": [{{"issue": string, "impact": "high|medium|low", "fix": string, "category": "on-page|technical|content|structured-data|links"}}]
+  "recommendations": [{{"issue": string, "impact": "high|medium|low", "fix": string, "example": string, "category": "on-page|technical|content|structured-data|links"}}]
 }}"""
 
 
@@ -341,6 +342,7 @@ def get_aeo_system_prompt(category: str) -> str:
 Return this EXACT JSON structure:
 CRITICAL SCORING RULE: All individual component `score` fields MUST be scored on a scale of 0.0 to 10.0. The `overall_score` MUST be on a scale of 0 to 100.
 CRITICAL LENGTH RULE: Your output MUST NOT exceed 4000 tokens. You MUST STRICTLY limit ALL arrays (especially `recommendations`, `issues`, `quick_wins`, `top_ai_queries_missed`, `gaps`, `brand_compliance.issues`) to a MAXIMUM of 2 items. Limit ALL string values to 1 short sentence. If you output more than 2 items in any array, the system will CRASH.
+For each recommendation, write an `example` field showing exactly what the fixed copy/code should look like — specific to this product's category.
 {{
   "ai_visibility_score": float, "ai_visibility_grade": "A|B|C|D|F", "category": "{cat}",
   "engine_likelihood": {{"google_ai_overview": "high|medium|low", "google_ai_overview_reason": string, "chatgpt": "high|medium|low", "chatgpt_reason": string, "perplexity": "high|medium|low", "gemini": "high|medium|low"}},
@@ -358,6 +360,6 @@ CRITICAL LENGTH RULE: Your output MUST NOT exceed 4000 tokens. You MUST STRICTLY
   }},
   "top_ai_queries_missed": [{{"query": string, "reason": string, "fix": string}}],
   "quick_wins": [string],
-  "recommendations": [{{"issue": string, "impact": "high|medium|low", "fix": string, "category": "eeat|faq|schema|content|structure"}}],
+  "recommendations": [{{"issue": string, "impact": "high|medium|low", "fix": string, "example": string, "category": "eeat|faq|schema|content|structure"}}],
   "gaps": [string]
 }}"""

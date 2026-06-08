@@ -181,7 +181,7 @@ window.SerpPreview = function SerpPreview({ url='', title='', description='' }) 
 }
 
 /* ── Recommendation Row ─────────────────────────────── */
-window.RecoRow = function RecoRow({ issue, impact='medium', fix, category }) {
+window.RecoRow = function RecoRow({ issue, impact='medium', fix, example, category }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="expand-row" style={{borderRadius:8,padding:'10px 12px'}} onClick={()=>setOpen(o=>!o)}>
@@ -196,6 +196,12 @@ window.RecoRow = function RecoRow({ issue, impact='medium', fix, category }) {
           {open && fix && (
             <div style={{marginTop:8,fontSize:12,color:'var(--stone)',lineHeight:1.6,background:'rgba(184,166,138,.08)',padding:'8px 12px',borderRadius:8}}>
               <strong style={{color:'var(--dark)'}}>Fix: </strong>{fix}
+            </div>
+          )}
+          {open && example && (
+            <div style={{marginTop:6,fontSize:12,color:'var(--dark)',background:'rgba(80,160,80,.08)',
+              border:'1px dashed rgba(80,160,80,.3)',padding:'8px 12px',borderRadius:8,fontFamily:'monospace',lineHeight:1.7}}>
+              <strong style={{color:'#3a7a3a',fontFamily:'sans-serif'}}>✦ Example: </strong>{example}
             </div>
           )}
         </div>
