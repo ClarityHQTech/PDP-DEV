@@ -138,6 +138,11 @@ window.App = function App() {
           setPublicReportData(data); 
           setIsInitializing(false); 
           setView(VIEWS.MODE_B_REPORT);
+          window.history.replaceState(
+            { view: VIEWS.MODE_B_REPORT, currentUrl: '', modeBResult: null,
+              siteData: null, allProducts: [], selectedCategory: null, activeTab: 'audit' },
+            '', window.location.href
+          );
         })
         .catch(() => doAuthInit(success, urlToken, errParam));
     } else if (auditId) {
@@ -147,6 +152,11 @@ window.App = function App() {
           setPublicAuditData(data); 
           setIsInitializing(false);
           setView(VIEWS.MODE_A_OVERVIEW);
+          window.history.replaceState(
+            { view: VIEWS.MODE_A_OVERVIEW, currentUrl: '', modeBResult: null,
+              siteData: null, allProducts: [], selectedCategory: null, activeTab: 'audit' },
+            '', window.location.href
+          );
         })
         .catch(() => doAuthInit(success, urlToken, errParam));
     } else {
@@ -309,12 +319,17 @@ window.App = function App() {
   // ── Public report (shareable link) ────────────────────────────────────────
   if (publicReportData) return (
     <div className="app-layout" style={{background:'var(--bg-gradient)'}}>
+      {isAuthenticated && (
+        <window.Sidebar currentView={view} setView={navigateTo} onSignOut={handleSignOut} />
+      )}
       <div className="main-content" style={{maxWidth:1200,margin:'0 auto',width:'100%',height:'100vh',overflowY:'auto'}}>
-        <div style={{marginBottom:20,marginTop:20,padding:'0 20px'}}>
-          <button className="btn btn-outline" onClick={() => window.history.back()}>
-            <i className="ph ph-arrow-left"></i> Back
-          </button>
-        </div>
+        {!isAuthenticated && (
+          <div style={{marginBottom:20,marginTop:20,padding:'0 20px'}}>
+            <button className="btn btn-outline" onClick={() => window.history.back()}>
+              <i className="ph ph-arrow-left"></i> Back
+            </button>
+          </div>
+        )}
         <window.ModeBReport result={publicReportData} />
       </div>
     </div>
@@ -323,12 +338,17 @@ window.App = function App() {
   // ── Public audit (shareable link) ─────────────────────────────────────────
   if (publicAuditData) return (
     <div className="app-layout" style={{background:'var(--bg-gradient)'}}>
+      {isAuthenticated && (
+        <window.Sidebar currentView={view} setView={navigateTo} onSignOut={handleSignOut} />
+      )}
       <div className="main-content" style={{maxWidth:1200,margin:'0 auto',width:'100%',height:'100vh',overflowY:'auto'}}>
-        <div style={{marginBottom:20,marginTop:20,padding:'0 20px'}}>
-          <button className="btn btn-outline" onClick={() => window.history.back()}>
-            <i className="ph ph-arrow-left"></i> Back
-          </button>
-        </div>
+        {!isAuthenticated && (
+          <div style={{marginBottom:20,marginTop:20,padding:'0 20px'}}>
+            <button className="btn btn-outline" onClick={() => window.history.back()}>
+              <i className="ph ph-arrow-left"></i> Back
+            </button>
+          </div>
+        )}
         {view === VIEWS.MODE_A_OVERVIEW && (
           <window.SiteOverviewView
             siteData={publicAuditData}
