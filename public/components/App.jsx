@@ -138,11 +138,6 @@ window.App = function App() {
           setPublicReportData(data); 
           setIsInitializing(false); 
           setView(VIEWS.MODE_B_REPORT);
-          window.history.replaceState(
-            { view: VIEWS.MODE_B_REPORT, currentUrl: '', modeBResult: null,
-              siteData: null, allProducts: [], selectedCategory: null, activeTab: 'audit' },
-            '', window.location.href
-          );
         })
         .catch(() => doAuthInit(success, urlToken, errParam));
     } else if (auditId) {
@@ -152,17 +147,32 @@ window.App = function App() {
           setPublicAuditData(data); 
           setIsInitializing(false);
           setView(VIEWS.MODE_A_OVERVIEW);
-          window.history.replaceState(
-            { view: VIEWS.MODE_A_OVERVIEW, currentUrl: '', modeBResult: null,
-              siteData: null, allProducts: [], selectedCategory: null, activeTab: 'audit' },
-            '', window.location.href
-          );
         })
         .catch(() => doAuthInit(success, urlToken, errParam));
     } else {
       doAuthInit(success, urlToken, errParam);
     }
   }, []);
+
+  useEffect(() => {
+    if (publicReportData && view === VIEWS.MODE_B_REPORT) {
+      window.history.replaceState(
+        { view: VIEWS.MODE_B_REPORT, currentUrl: '', modeBResult: null,
+          siteData: null, allProducts: [], selectedCategory: null, activeTab: 'audit' },
+        '', window.location.href
+      );
+    }
+  }, [publicReportData, view]);
+
+  useEffect(() => {
+    if (publicAuditData && view === VIEWS.MODE_A_OVERVIEW) {
+      window.history.replaceState(
+        { view: VIEWS.MODE_A_OVERVIEW, currentUrl: '', modeBResult: null,
+          siteData: null, allProducts: [], selectedCategory: null, activeTab: 'audit' },
+        '', window.location.href
+      );
+    }
+  }, [publicAuditData, view]);
 
   const doAuthInit = (success, urlToken, errParam) => {
     if (errParam) {
