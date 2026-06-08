@@ -41,23 +41,42 @@ window.App = function App() {
   const TRANSIENT_VIEWS = new Set([VIEWS.ANALYZING, VIEWS.MODE_A_CRAWLING]);
 
   const navigateTo = (newView, extras = {}) => {
+    const nextCurrentUrl = 'currentUrl' in extras ? extras.currentUrl : currentUrl;
+    const nextModeBResult = 'modeBResult' in extras ? extras.modeBResult : modeBResult;
+    const nextSiteData = 'siteData' in extras ? extras.siteData : siteData;
+    const nextAllProducts = 'allProducts' in extras ? extras.allProducts : allProducts;
+    const nextSelectedCategory = 'selectedCategory' in extras ? extras.selectedCategory : selectedCategory;
+    const nextActiveTab = 'activeTab' in extras ? extras.activeTab : activeTab;
+
+    let nextUrlString = window.location.pathname.replace(/\/index\.html$/, '/');
+    if (newView === VIEWS.LANDING || newView === VIEWS.HISTORY || newView === VIEWS.LOGIN) {
+      // keep clean path
+    } else if (newView === VIEWS.MODE_B_REPORT && nextModeBResult && nextModeBResult.report_id) {
+      nextUrlString += '?report_id=' + encodeURIComponent(nextModeBResult.report_id);
+    } else if ((newView === VIEWS.MODE_A_OVERVIEW || newView === VIEWS.MODE_A_PRODUCTS || newView === VIEWS.MODE_A_PRODUCT_REPORT) && nextSiteData && nextSiteData.audit_id) {
+      nextUrlString += '?audit_id=' + encodeURIComponent(nextSiteData.audit_id);
+    } else if (nextCurrentUrl) {
+      nextUrlString += '?url=' + encodeURIComponent(nextCurrentUrl);
+    }
+
     if (!TRANSIENT_VIEWS.has(newView)) {
       const snapshot = {
         view:             newView,
-        currentUrl:       'currentUrl'       in extras ? extras.currentUrl       : currentUrl,
-        modeBResult:      'modeBResult'       in extras ? extras.modeBResult      : modeBResult,
-        siteData:         'siteData'          in extras ? extras.siteData         : siteData,
-        allProducts:      'allProducts'       in extras ? extras.allProducts      : allProducts,
-        selectedCategory: 'selectedCategory'  in extras ? extras.selectedCategory : selectedCategory,
-        activeTab:        'activeTab'         in extras ? extras.activeTab        : activeTab,
+        currentUrl:       nextCurrentUrl,
+        modeBResult:      nextModeBResult,
+        siteData:         nextSiteData,
+        allProducts:      nextAllProducts,
+        selectedCategory: nextSelectedCategory,
+        activeTab:        nextActiveTab,
       };
       try {
-        window.history.pushState(snapshot, '');
+        window.history.pushState(snapshot, '', nextUrlString);
       } catch (e) {
         // State too large (unlikely) — fall back silently
-        window.history.pushState({ view: newView }, '');
+        window.history.pushState({ view: newView }, '', nextUrlString);
       }
     }
+
     if ('currentUrl'       in extras) setCurrentUrl(extras.currentUrl);
     if ('modeBResult'      in extras) setModeBResult(extras.modeBResult);
     if ('siteData'         in extras) setSiteData(extras.siteData);
