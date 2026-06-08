@@ -162,7 +162,7 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
             seen_urls.add(c["url"])
             categories.append(c)
     total_categories_found = len(categories)
-    categories = categories[:10]
+    categories = categories[:4]
     total_products = site_data.get("total_products", 0)
 
     yield _sse("site_overview", {
@@ -183,7 +183,7 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
     all_results: list[dict] = []
     analyzed_count = 0
     # Distribute analysis so every category gets represented
-    products_per_category = 5
+    products_per_category = 4
     unique_urls = {}
     urls_to_analyze = []
 

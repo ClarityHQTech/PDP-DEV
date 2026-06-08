@@ -436,8 +436,8 @@ window.SEOTab = function SEOTab({ seo={}, url='' }) {
         </div>
         <div>
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}>
-            <span className={`badge ${gradeBadgeClass(seo.grade||scoreGrade(seo.overall_seo_score))}`} style={{fontSize:14,padding:'4px 12px',display:'inline-flex',alignItems:'center'}}>
-              Grade {seo.grade||scoreGrade(seo.overall_seo_score)}
+            <span className={`badge ${gradeBadgeClass(window.scoreGrade(window.scaleScore(seo.overall_seo_score)))}`} style={{fontSize:14,padding:'4px 12px',display:'inline-flex',alignItems:'center'}}>
+              Grade {window.scoreGrade(window.scaleScore(seo.overall_seo_score))}
               <InfoTooltip text="Grade A: 85-100 (Excellent), Grade B: 70-84 (Good), Grade C: 55-69 (Average), Grade D: 40-54 (Poor), Grade F: <40 (Failing)" />
             </span>
             <span style={{fontSize:12,color:'var(--muted)'}}>Primary keyword: <strong style={{color:'var(--dark)'}}>{seo.primary_keyword||'—'}</strong></span>
@@ -777,9 +777,9 @@ window.AEOTab = function AEOTab({ aeo={} }) {
         </div>
         <div>
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}>
-            <span className={`badge ${gradeBadgeClass(aeo.ai_visibility_grade||scoreGrade(aeo.ai_visibility_score))}`} style={{fontSize:14,padding:'4px 12px',display:'inline-flex',alignItems:'center'}}>
-              Grade {aeo.ai_visibility_grade||scoreGrade(aeo.ai_visibility_score)}
-              <InfoTooltip text="Grade A: 8.5-10, Grade B: 7.0-8.4, Grade C: 5.5-6.9, Grade D: 4.0-5.4, Grade F: <4.0" />
+            <span className={`badge ${gradeBadgeClass(window.scoreGrade(window.scaleScore(aeo.ai_visibility_score)))}`} style={{fontSize:14,padding:'4px 12px',display:'inline-flex',alignItems:'center'}}>
+              Grade {window.scoreGrade(window.scaleScore(aeo.ai_visibility_score))}
+              <InfoTooltip text="Grade A: 85-100 (Excellent), Grade B: 70-84 (Good), Grade C: 55-69 (Average), Grade D: 40-54 (Poor), Grade F: <40 (Failing)" />
             </span>
           </div>
           <div style={{fontSize:12,color:'var(--muted)',marginBottom:10}}>
@@ -1062,16 +1062,7 @@ window.ModeBReport = function ModeBReport({ result={}, url='', onBack, onPrev, o
               <div style={{fontWeight:700,fontSize:15,color:'var(--ink)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{pageTitle}</div>
               <div style={{fontSize:11,color:'var(--muted)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{url}</div>
             </div>
-            {(onPrev !== undefined || onNext !== undefined) && (
-              <div style={{display:'flex',alignItems:'center',gap:4, marginLeft: 'auto'}}>
-                <button className="btn btn-ghost" style={{padding:'6px 10px'}} onClick={onPrev} disabled={!onPrev}>
-                  <i className="ph ph-caret-left"></i> Prev Product
-                </button>
-                <button className="btn btn-ghost" style={{padding:'6px 10px'}} onClick={onNext} disabled={!onNext}>
-                  Next Product <i className="ph ph-caret-right"></i>
-                </button>
-              </div>
-            )}
+
           </div>
           {/* Score chips */}
           <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
@@ -1194,9 +1185,9 @@ window.SiteOverviewView = function SiteOverviewView({ siteData={}, products=[], 
           <div style={{fontSize:11,fontWeight:700,color:'var(--muted)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:4}}>
             Categories ({categories.length})
           </div>
-          {siteData.categories_found > 10 && (
+          {siteData.categories_found > 4 && (
             <div style={{fontSize:12,color:'var(--stone)'}}>
-              We have found {siteData.categories_found} categories but we have analyzed only 10 due to limit.
+              We have found {siteData.categories_found} categories but we have analyzed only 4 due to limit.
             </div>
           )}
         </div>
@@ -1239,7 +1230,7 @@ window.SiteOverviewView = function SiteOverviewView({ siteData={}, products=[], 
                 <div style={{fontSize:12,color:'var(--muted)',marginBottom:12}}>
                   {isAllProducts ? summedTotal : cat.product_count} products
                   {validProds.length > 0 && <span style={{marginLeft: 4, color:'var(--sage-dk)', fontWeight:600}}>({validProds.length} analyzed)</span>}
-                  {(cat.product_count > 5) && (
+                  {(cat.product_count > 4) && (
                      <div style={{marginTop: 4, fontSize: 11, color: 'var(--stone)', lineHeight: 1.4}}>
                        In this category {cat.product_count} products are there but right now we have analyzed only {validProds.length || 0} due to limit.
                      </div>
@@ -1328,10 +1319,10 @@ window.ProductListView = function ProductListView({ category={}, products=[], on
                 <div style={{textAlign:'center',fontWeight:700,fontSize:14,color:scoreColor(sScore)}}>{Math.round(sScore)}</div>
                 <div style={{textAlign:'center',fontWeight:700,fontSize:14,color:scoreColor(aScore)}}>{Math.round(aScore)}</div>
                 <div style={{textAlign:'center'}}>
-                  <span className={`badge ${gradeBadgeClass(p.seo_grade)}`}>{p.seo_grade||'?'}</span>
+                  <span className={`badge ${gradeBadgeClass(window.scoreGrade(sScore))}`}>{window.scoreGrade(sScore)||'?'}</span>
                 </div>
                 <div style={{textAlign:'center'}}>
-                  <span className={`badge ${gradeBadgeClass(p.aeo_grade)}`}>{p.aeo_grade||'?'}</span>
+                  <span className={`badge ${gradeBadgeClass(window.scoreGrade(aScore))}`}>{window.scoreGrade(aScore)||'?'}</span>
                 </div>
                 <button className="btn btn-outline" style={{padding:'6px 12px',fontSize:12, justifySelf:'end'}}>
                   View Report <i className="ph ph-arrow-right"></i>

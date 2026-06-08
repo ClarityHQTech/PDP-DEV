@@ -48,6 +48,7 @@ window.App = function App() {
         })
         .then(data => {
           setPublicAuditData(data);
+          setView(VIEWS.MODE_A_OVERVIEW);
           setIsInitializing(false);
         })
         .catch(e => {
@@ -244,12 +245,14 @@ window.App = function App() {
 
     if (item.mode.includes('Product')) {
       // FIX-2: history result_data already has seo_report/aeo_report keys (fixed in history.py)
+      rd.report_id = item.id; // Inject report_id to make link shareable
       setModeBResult(rd);
       setCurrentUrl(item.url);
       setView(VIEWS.MODE_B_REPORT);
     } else {
       // Mode A restore — siteData shape must match what SiteOverviewView expects
       setSiteData({
+        audit_id:          item.id, // Inject audit_id to make link shareable
         domain:            rd.domain       || item.url,
         homepage_url:      rd.homepage_url || item.url,
         categories_found:  rd.categories_found  || 0,
@@ -298,21 +301,44 @@ window.App = function App() {
       <div className="app-layout" style={{ background: 'var(--bg-gradient)' }}>
         <div className="main-content" style={{ maxWidth: 1200, margin: '0 auto', width: '100%', height: '100vh', overflowY: 'auto' }}>
           <div style={{marginBottom: 20, marginTop: 20, padding: '0 20px'}}>
-            <button className="btn btn-outline" onClick={() => window.location.href='/'}>
-              <i className="ph ph-arrow-left"></i> Home
+            <button className="btn btn-outline" onClick={() => {
+              if (view === VIEWS.MODE_B_REPORT) setView(VIEWS.MODE_A_PRODUCTS);
+              else if (view === VIEWS.MODE_A_PRODUCTS) setView(VIEWS.MODE_A_OVERVIEW);
+              else window.location.href='/';
+            }}>
+              <i className="ph ph-arrow-left"></i> {view === VIEWS.MODE_A_OVERVIEW ? 'Home' : 'Back'}
             </button>
           </div>
-          <window.SiteOverviewView 
-            siteData={publicAuditData} 
-            allProducts={publicAuditData.products} 
-            onViewProduct={(url) => {
-              const p = publicAuditData.products.find(x => x.url === url);
-              if (p) {
-                setPublicReportData(p);
-                setPublicAuditData(null);
-              }
-            }} 
-          />
+
+          {view === VIEWS.MODE_A_OVERVIEW && (
+            <window.SiteOverviewView 
+              siteData={publicAuditData} 
+              products={publicAuditData.products} 
+              onCategoryClick={(cat) => { setSelectedCategory(cat); setView(VIEWS.MODE_A_PRODUCTS); }}
+            />
+          )}
+
+          {view === VIEWS.MODE_A_PRODUCTS && selectedCategory && (
+            <window.ProductListView
+              category={selectedCategory}
+              products={publicAuditData.products}
+              onProductClick={(p) => {
+                setModeBResult({
+                  page_title: p.name,
+                  seo_report: p.seo_report || {},
+                  aeo_report: p.aeo_report || {},
+                  category:       p.category || '',
+                  category_label: p.category_label || '',
+                });
+                setView(VIEWS.MODE_B_REPORT);
+              }}
+              onBack={() => setView(VIEWS.MODE_A_OVERVIEW)}
+            />
+          )}
+
+          {view === VIEWS.MODE_B_REPORT && modeBResult && (
+             <window.ModeBReport result={modeBResult} url={modeBResult.url} onBack={() => setView(VIEWS.MODE_A_PRODUCTS)} />
+          )}
         </div>
       </div>
     );
