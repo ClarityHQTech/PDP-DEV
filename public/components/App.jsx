@@ -24,6 +24,8 @@ const AppContent = () => {
   const [publicReportData, setPublicReportData] = useState(null);
   const [publicAuditData,  setPublicAuditData]  = useState(null);
 
+  const isAuthenticated = !!token;
+
   const VIEWS = {
     LOGIN:                'LOGIN',
     LANDING:              'LANDING',
