@@ -134,12 +134,20 @@ window.App = function App() {
     if (reportId) {
       fetch(`/api/v1/history/public-report/${reportId}`)
         .then(r => r.ok ? r.json() : Promise.reject())
-        .then(data => { setPublicReportData(data); setIsInitializing(false); })
+        .then(data => { 
+          setPublicReportData(data); 
+          setIsInitializing(false); 
+          setView(VIEWS.MODE_B_REPORT);
+        })
         .catch(() => doAuthInit(success, urlToken, errParam));
     } else if (auditId) {
       fetch(`/api/v1/history/public-audit/${auditId}`)
         .then(r => r.ok ? r.json() : Promise.reject())
-        .then(data => { setPublicAuditData(data); setIsInitializing(false); })
+        .then(data => { 
+          setPublicAuditData(data); 
+          setIsInitializing(false);
+          setView(VIEWS.MODE_A_OVERVIEW);
+        })
         .catch(() => doAuthInit(success, urlToken, errParam));
     } else {
       doAuthInit(success, urlToken, errParam);
