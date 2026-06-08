@@ -1,0 +1,15 @@
+{
+  "framework": null,
+  "buildCommand": "echo 'No build needed for static HTML/JS'",
+  "outputDirectory": "public",
+  "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "https://pdp-dev-2.onrender.com/api/:match*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

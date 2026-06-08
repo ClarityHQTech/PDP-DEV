@@ -1,0 +1,192 @@
+{
+  "_access": {
+    "companions_included": [
+      "claims_registry"
+    ],
+    "key_name": "Full Access ITK",
+    "scope": "context_key",
+    "sections_included": [
+      "brand",
+      "governance",
+      "identity",
+      "metadata",
+      "positioning",
+      "verbal",
+      "visual"
+    ]
+  },
+  "brand": {
+    "brand_type": "consumer_brand",
+    "business_model": "transactional_sales",
+    "display_name": "In The Know Kitchen",
+    "distribution_model": "d2c",
+    "id": "in-the-know-kitchen",
+    "industry": "consumer_goods",
+    "industry_profile": "food_beverage",
+    "offering_type": "physical_goods"
+  },
+  "governance": {
+    "approval_workflow": {
+      "enabled": true,
+      "tiers": [
+        {
+          "approvers": [
+            "Marketing Manager"
+          ],
+          "scope": "social_media",
+          "tier": "routine"
+        },
+        {
+          "approvers": [
+            "Creative Director"
+          ],
+          "scope": "product_content",
+          "tier": "standard"
+        }
+      ]
+    },
+    "claims_policy": {
+      "allow_before_after": false,
+      "allow_comparative_claims": true,
+      "claims_strictness": "moderate",
+      "evidence_required_for": [
+        "efficacy_claim",
+        "sustainability_claim"
+      ],
+      "overrides": []
+    },
+    "pricing_and_urgency": {
+      "discount_cap_percentage": 20,
+      "false_scarcity_policy": "warn",
+      "pricing_positioning": "premium",
+      "urgency_policy": "subtle"
+    },
+    "risk_and_enforcement": {
+      "block_threshold": 50,
+      "enforcement_mode": "standard",
+      "risk_posture": "moderate"
+    },
+    "tactics_policy": {
+      "inherit_defaults": true,
+      "overrides": [
+        {
+          "enforcement": "warn",
+          "reason": "Maintaining authenticity and transparency is crucial.",
+          "tactic_id": "false_scarcity"
+        }
+      ]
+    }
+  },
+  "identity": {
+    "brand_archetype": "creator",
+    "mission": "To produce and provide unique, handcrafted gourmet gifts and treats that are both indulgent and sustainable.",
+    "values": [
+      "craftsmanship",
+      "sustainability",
+      "luxury",
+      "innovation"
+    ]
+  },
+  "metadata": {
+    "gpl_version": "1.0.0",
+    "schema_version": "2.0",
+    "status": "active"
+  },
+  "positioning": {
+    "target_audience": {
+      "primary": {
+        "description": "Affluent individuals and corporate clients seeking luxury, handcrafted gifts and gourmet treats."
+      }
+    }
+  },
+  "verbal": {
+    "vocabulary": {
+      "encouraged_words": [
+        "artisan",
+        "handcrafted",
+        "luxury",
+        "sustainable",
+        "indulgence"
+      ],
+      "forbidden_words": [
+        {
+          "alternative": "affordable luxury",
+          "reason": "Contradicts luxury positioning",
+          "word": "cheap"
+        }
+      ]
+    },
+    "voice": {
+      "description": "In The Know Kitchen communicates with a sophisticated and warm tone, emphasizing luxury and craftsmanship.",
+      "tone": [
+        "sophisticated",
+        "warm",
+        "inspirational"
+      ]
+    }
+  },
+  "visual": {
+    "colors": {
+      "accent": [
+        {
+          "hex": "#007AFF",
+          "name": "Medium Vibrant Blue",
+          "usage": "Call-to-action elements"
+        }
+      ],
+      "background": [
+        {
+          "hex": "#FFFFFF",
+          "name": "Very Light Gray",
+          "usage": "Page backgrounds"
+        }
+      ],
+      "neutral": [
+        {
+          "hex": "#000000",
+          "name": "Very Dark Gray",
+          "usage": "Text and borders"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "Very Light Gray",
+          "usage": "Text and backgrounds"
+        }
+      ],
+      "primary": [
+        {
+          "hex": "#2A3449",
+          "name": "Dark Muted",
+          "usage": "Core identity color"
+        },
+        {
+          "hex": "#007AFF",
+          "name": "Medium Vibrant Blue",
+          "usage": "Accent in branding"
+        }
+      ],
+      "secondary": [
+        {
+          "hex": "#BDBD73",
+          "name": "Medium Muted Yellow",
+          "usage": "Supporting color"
+        },
+        {
+          "hex": "#C02C30",
+          "name": "Medium Vibrant Red",
+          "usage": "Supporting color"
+        }
+      ]
+    },
+    "primary_brand_mark": {
+      "file_url": "https://cdn.shopify.com/s/files/1/0840/7446/3540/files/ITK.svg?v=1696339335",
+      "type": "logo"
+    },
+    "typography": {
+      "primary": {
+        "family": "Playfair Display",
+        "weights": [400, 700]
+      }
+    }
+  }
+}

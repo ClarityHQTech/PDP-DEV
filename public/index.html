@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Organic360 by Clarity HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Data & Helpers Component -->
+<script type="text/babel">
+  window.num = function num(v) { return typeof v === 'number' && !isNaN(v) ? v : 0; };
+  window.scoreColor = function scoreColor(s) {
+    if (s >= 85) return 'var(--green)';
+    if (s >= 70) return '#4caf50'; // light green
+    if (s >= 55) return 'var(--amber)';
+    if (s >= 40) return '#ffb300';
+    return 'var(--red)';
+  };
+  window.gradeBadgeClass = function gradeBadgeClass(g) {
+    if (!g) return 'badge-steel';
+    if (g === 'A') return 'badge-green';
+    if (g === 'B') return 'badge-green';
+    if (g === 'C') return 'badge-amber';
+    if (g === 'D') return 'badge-amber';
+    return 'badge-red';
+  };
+  window.statusIcon = function statusIcon(s) {
+    if (s === 'good') return <i className="ph ph-check-circle" style={{color:'var(--green)'}}></i>;
+    if (s === 'warning') return <i className="ph ph-warning" style={{color:'var(--amber)'}}></i>;
+    if (s === 'missing') return <i className="ph ph-x-circle" style={{color:'var(--red)'}}></i>;
+    return null;
+  };
+  window.boolIcon = function boolIcon(v, size='16px') {
+    if (v === true)  return <i className="ph ph-check-circle" style={{color:'var(--green)',fontSize:size}}></i>;
+    if (v === false) return <i className="ph ph-x-circle"    style={{color:'var(--red)',  fontSize:size}}></i>;
+    return <i className="ph ph-minus-circle" style={{color:'var(--muted)',fontSize:size}}></i>;
+  };
+  window.likelihoodBadge = function likelihoodBadge(v) {
+    if (v === 'high')   return <span className="badge badge-green">High</span>;
+    if (v === 'medium') return <span className="badge badge-amber">Medium</span>;
+    if (v === 'low')    return <span className="badge badge-red">Low</span>;
+    return <span className="badge badge-steel">?</span>;
+  };
+  window.impactBadge = function impactBadge(v) {
+    if (v === 'high')   return <span className="badge badge-red">High Impact</span>;
+    if (v === 'medium') return <span className="badge badge-amber">Medium</span>;
+    return <span className="badge badge-steel">Low</span>;
+  };
+</script>
+
+<!-- Components -->
+<script type="text/babel" src="/components/LegacyComponents.jsx"></script>
+<script type="text/babel" src="/components/Login.jsx"></script>
+<script type="text/babel" src="/components/Sidebar.jsx"></script>
+<script type="text/babel" src="/components/Landing.jsx"></script>
+<script type="text/babel" src="/components/History.jsx"></script>
+<script type="text/babel" src="/components/App.jsx"></script>
+
+<!-- Entry Point -->
+<script type="text/babel">
+  setTimeout(() => {
+    ReactDOM.createRoot(document.getElementById('root')).render(<window.App />);
+  }, 100);
+</script>
+
+</body>
+</html>
