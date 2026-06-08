@@ -1,6 +1,21 @@
 const { useState, useEffect, useRef } = React;
 
-window.App = function App() {
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+  static getDerivedStateFromError(error) { return { hasError: true, error }; }
+  render() { 
+    if (this.state.hasError) return <div style={{padding: 40, color: 'red', background: '#fff', height: '100vh'}}><h1>React Crashed</h1><pre>{this.state.error.stack}</pre></div>; 
+    return this.props.children; 
+  }
+}
+
+window.App = () => (
+  <ErrorBoundary>
+    <AppContent />
+  </ErrorBoundary>
+);
+
+const AppContent = () => {
   const [user,             setUser]             = useState(null);
   const [token,            setToken]            = useState(null);
   const [authError,        setAuthError]        = useState('');
