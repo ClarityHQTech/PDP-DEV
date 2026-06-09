@@ -259,7 +259,8 @@ const AppContent = () => {
         setView(VIEWS.ANALYZING);
         let finalResult = null;
 
-        await window.streamSSE('/api/v1/analyze/pdp/stream', { url }, t, (event, data) => {
+        const RENDER_URL = window.location.hostname.includes('localhost') ? '' : 'https://organic360-api.onrender.com';
+        await window.streamSSE(`${RENDER_URL}/api/v1/analyze/pdp/stream`, { url }, t, (event, data) => {
           if (event === 'progress') {
             setAnalyzeStep(data.step || '');
             setAnalyzePct(data.pct  || 0);
@@ -283,7 +284,8 @@ const AppContent = () => {
         let currentSiteData = null;
         const collectedProducts = [];
 
-        await window.streamSSE('/api/v1/site/audit/stream', { url }, t, (event, data) => {
+        const RENDER_URL = window.location.hostname.includes('localhost') ? '' : 'https://organic360-api.onrender.com';
+        await window.streamSSE(`${RENDER_URL}/api/v1/site/audit/stream`, { url }, t, (event, data) => {
           if (event === 'progress') {
             setAnalyzeStep(data.step || 'crawling');
             setAnalyzePct(data.pct  || 0);

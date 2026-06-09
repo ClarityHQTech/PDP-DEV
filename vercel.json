@@ -1,15 +1,43 @@
 {
-  "framework": null,
-  "buildCommand": "echo 'No build needed for static HTML/JS'",
-  "outputDirectory": "public",
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
   "rewrites": [
     {
-      "source": "/api/:match*",
-      "destination": "https://pdp-dev-2.onrender.com/api/:match*"
+      "source": "/api/v1/auth/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/v1/history",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/v1/history/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/v1/detect-url",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/report/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/site-report/(.*)",
+      "destination": "/api/index.py"
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/public/index.html"
     }
   ]
 }

@@ -21,7 +21,7 @@ from app.agents.mode1_graph import analyze_pdp_stream
 from app.agents.site_graph import audit_site_stream
 
 from app.core.database import init_db
-from app.api.routes import auth, history
+from app.api.routes import auth, history, report_export
 
 logger = get_logger(__name__)
 settings = get_settings()
@@ -37,7 +37,12 @@ app = FastAPI(title="PDP Analyzer", version="2.0.0", docs_url="/api/docs", lifes
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins + ["*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://organic360.clarityhq.ai",
+        "https://organic360.vercel.app"
+    ],
+    allow_origin_regex=r"https://organic360(-[a-zA-Z0-9\-]+)?\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,7 +52,11 @@ app.add_middleware(
 # ── Routers ────────────────────────────────────────────────────────────────────
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(history.router, prefix="/api/v1")
+app.include_router(report_export.router)
 
+@app.get("/api/v1/health")
+async def health_check():
+    return {"status": "ok", "message": "Server is awake"}
 
 # ── Request Models ─────────────────────────────────────────────────────────────
 class AnalyzeRequest(BaseModel):
