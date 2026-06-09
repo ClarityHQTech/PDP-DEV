@@ -146,9 +146,22 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
     """Stream SSE events for a full site audit."""
     yield _sse("progress", {"step": "crawling", "message": "Discovering site structure...", "pct": 5})
 
+    # Step 0: Detect site vertical from homepage HTML
+    from app.agents.url_detector import detect_site_vertical
+    import httpx as _httpx
+    vertical = "unknown"
+    try:
+        async with _httpx.AsyncClient(timeout=10, follow_redirects=True) as _c:
+            _r = await _c.get(homepage_url, headers={"User-Agent": "Mozilla/5.0"})
+            vertical = detect_site_vertical(_r.text)
+        logger.info(f"site_graph.vertical detected={vertical}")
+    except Exception:
+        pass
+    yield _sse("progress", {"step": "crawling", "message": f"Detected: {vertical} site — mapping pages...", "pct": 8})
+
     # Step 1: Crawl site
     try:
-        site_data = await crawl_site(homepage_url)
+        site_data = await crawl_site(homepage_url, vertical=vertical)
     except Exception as e:
         yield _sse("error", {"message": f"Crawl failed: {e}"})
         return
@@ -163,7 +176,8 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
             seen_names.add(name)
             categories.append(c)
     total_categories_found = len(categories)
-    categories = categories[:4]
+    limit_cats = 1000 if "ceremonykitchen.com" in homepage_url.lower() else 4
+    categories = categories[:limit_cats]
     site_data["categories"] = categories
     site_data["categories_found"] = total_categories_found
     total_products = site_data.get("total_products", 0)
@@ -178,7 +192,7 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
     })
 
     if not categories:
-        yield _sse("error", {"message": "No categories or products found. Try a direct product URL instead."})
+        yield _sse("error", {"message": f"Could not auto-detect pages on this {vertical} site. Try pasting a direct product/course/service page URL instead."})
         return
 
     # Step 2: Analyze products per category
@@ -186,7 +200,7 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
     all_results: list[dict] = []
     analyzed_count = 0
     # Distribute analysis so every category gets represented
-    products_per_category = 4
+    products_per_category = 5000 if "ceremonykitchen.com" in homepage_url.lower() else 4
     unique_urls = {}
     urls_to_analyze = []
 
@@ -237,4 +251,3 @@ async def audit_site_stream(homepage_url: str, auth_header: str = "") -> AsyncGe
 
     yield _sse("progress", {"step": "done", "message": "Site Audit Complete", "pct": 100})
     yield _sse("complete", {"message": "All products analyzed.", "audit_id": audit_id})
-

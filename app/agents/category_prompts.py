@@ -167,6 +167,87 @@ PETS-SPECIFIC SEO SIGNALS:
 - Feeding guide based on weight
 """,
 
+
+"jobs": """
+JOBS/RECRUITMENT-SPECIFIC SEO SIGNALS:
+- Job title exact match in H1 and title tag (e.g., "Senior Backend Engineer – Remote India")
+- JobPosting schema: title, hiringOrganization, jobLocation, datePosted, validThrough, baseSalary, employmentType
+- Salary range explicitly stated (ranges rank better than "competitive salary")
+- Employment type clear: Full-Time / Part-Time / Contract / Freelance / Internship
+- Location type: On-site / Remote / Hybrid — in schema AND visible text
+- Required skills as bullet list (keyword-rich, AI extracts these for skill-match queries)
+- Experience level stated: "2–4 years", "fresher", "senior" — not vague
+- Benefits section: ESOPs, health insurance, WFH allowance, learning budget
+- Company overview with headcount, funding, Glassdoor/LinkedIn link
+- Application deadline or "Rolling basis" stated
+- Duplicate job listing detection risk (same title on multiple pages)
+- Review/rating schema for company (employer brand signals)
+""",
+
+"travel": """
+TRAVEL/HOSPITALITY-SPECIFIC SEO SIGNALS:
+- LodgingBusiness / TouristAttraction / TouristTrip schema as appropriate
+- Price clearly stated per night / per person / per package (with currency)
+- Check-in / Check-out times visible
+- Amenities list structured (WiFi, pool, parking, breakfast) — AI extracts for "hotels with X" queries
+- Star rating + review count in schema (AggregateRating)
+- Location structured data: geo coordinates, address, nearby landmark
+- Photo gallery with ALT tags describing views/rooms
+- Cancellation policy clearly visible (trust signal + AI cites this)
+- Availability widget or "Check Availability" CTA prominent
+- Seasonal pricing / peak season dates mentioned
+- FOMO signals: "Only 2 rooms left", "Sold out last weekend" — schema-compatible urgency
+- Accessibility features stated (wheelchair, elevator) — required for inclusive search
+""",
+
+"healthcare": """
+HEALTHCARE-SPECIFIC SEO SIGNALS (YMYL — highest scrutiny):
+- Physician/Specialist name, qualifications (MBBS, MD, MCh) in MedicalBusiness or Person schema
+- Author/reviewer schema: "Content reviewed by Dr. [Name], [Specialty], [Hospital]" — YMYL critical
+- Service/treatment name exact in H1 and title
+- MedicalCondition or MedicalProcedure schema where applicable
+- Certifications: NABH, JCI accreditation, ISO — visible and in schema
+- Address + Phone in LocalBusiness schema (NAP consistency critical)
+- Appointment booking CTA with availability
+- Cost range / insurance coverage stated (highly searched)
+- Treatment success rate / patient outcomes if claimable (backed by data)
+- No unsubstantiated cure claims ("treats" vs "may help manage")
+- Patient testimonials with verified tag (not anonymous — YMYL trust)
+- Privacy policy visible (DPDP Act 2023 compliance for Indian sites)
+""",
+
+"gaming": """
+GAMING-SPECIFIC SEO SIGNALS:
+- Game title + platform in H1 and title tag ("Elden Ring – PS5 Review / Buy")
+- VideoGame schema: name, gamePlatform, genre, author, publisher, operatingSystem, applicationCategory
+- Platform compatibility explicitly listed: PC / PS5 / Xbox / Switch / Mobile
+- System requirements (minimum + recommended) — AI answers "can my PC run X"
+- Genre tags: RPG, FPS, Strategy, Puzzle, Open World
+- Multiplayer info: online/offline/co-op/PvP — highly queried
+- Age rating (PEGI/ESRB/CERO) in schema
+- DLC / expansion content list if applicable
+- Release date + latest patch version
+- AggregateRating from Metacritic/OpenCritic mentioned (trust signals)
+- Video trailer with VideoObject schema
+- Language support list
+""",
+
+"media": """
+MEDIA/NEWS/CONTENT-SPECIFIC SEO SIGNALS:
+- Article / NewsArticle / BlogPosting schema with author, datePublished, dateModified, publisher
+- Author name + bio + authoritative credentials — E-E-A-T critical for news
+- Publication date AND last-updated date both visible and in schema
+- Headline exact match in H1 and title (no clickbait mismatch — Google penalty risk)
+- Speakable schema for audio/voice assistant citability
+- Article word count adequate (600+ for news, 1500+ for analysis pieces)
+- Internal linking to related articles / series
+- Image caption + photographer credit (copyright compliance + ALT)
+- Topic taxonomy / tag breadcrumb in BreadcrumbList schema
+- Podcast: PodcastEpisode schema with duration, episodeNumber, partOfSeries
+- Video: VideoObject schema with thumbnailUrl, duration, uploadDate
+- Paywall/access level declared in schema if applicable (isAccessibleForFree)
+""",
+
 "generic": """
 GENERIC ECOMMERCE SIGNALS:
 Apply all global SEO signals. Focus on:
@@ -282,6 +363,58 @@ AI queries: "best dog food for senior large breed", "is this safe for puppies?",
 - Vet recommendation claim boosts AI confidence to cite
 """,
 
+
+"jobs": """
+JOBS AEO SIGNALS:
+- FAQ covering: salary, work hours, growth path, interview process, team culture
+- Conversational content: "What does a [Job Title] do at [Company]?" answered directly
+- Speakable schema on key job details (role summary, location, salary)
+- Unique company value prop: why join us vs competitors?
+- Employee testimonials / Glassdoor rating cited
+- AI queries to cover: "Is [Company] a good place to work", "remote jobs in [city] for [skill]"
+""",
+
+"travel": """
+TRAVEL AEO SIGNALS:
+- FAQ: "Is [destination] safe?", "Best time to visit [place]?", "What is included in the package?"
+- Direct answer format for top travel queries
+- LocalBusiness + LodgingBusiness schema for AI map/assistant citations
+- Review content covering: food, staff, cleanliness, location, value
+- AI queries to cover: "best hotels near [landmark]", "family-friendly resorts in [city]"
+- Speakable schema on location + price + availability
+""",
+
+"healthcare": """
+HEALTHCARE AEO SIGNALS (YMYL — maximum E-E-A-T required):
+- FAQ: "How much does [treatment] cost?", "Is [doctor] available on weekends?", "What to expect during [procedure]?"
+- Every health claim backed by citation (NIH, PubMed, institutional study)
+- Doctor credentials front-and-center — AI cites credentials for medical queries
+- Speakable schema on clinic hours, address, contact
+- AI queries to cover: "best [specialty] doctor in [city]", "[treatment] side effects", "[condition] specialist near me"
+- Trust signals: patient count, years of practice, success rate (verifiable)
+""",
+
+"gaming": """
+GAMING AEO SIGNALS:
+- FAQ: "Is [game] worth buying?", "How long to beat [game]?", "Does [game] have multiplayer?"
+- Direct answers to: system requirements, platform exclusivity, DLC count, game length
+- Speakable schema on key game facts (genre, platform, rating)
+- AI queries to cover: "best RPG games 2025", "[game] vs [game] comparison", "games like [title]"
+- Review content with playtime hours mentioned (RAG-ready specificity)
+- VideoObject schema for trailers (YouTube-cited by AI overviews)
+""",
+
+"media": """
+MEDIA AEO SIGNALS:
+- Speakable schema on article summary, headline, key finding
+- FAQ: "What is [topic]?", "Why did [event] happen?", "What does [term] mean?"
+- Author E-E-A-T: credentials, beat expertise, publication history
+- Structured summary / TL;DR section at top (AI Overview source)
+- Unique data / statistics cited (primary source) — AI prefers citable original data
+- AI queries to cover: "[topic] explained", "latest news on [subject]", "summary of [event]"
+- dateModified always updated — stale articles deprioritized by AI engines
+""",
+
 "generic": """
 Apply all global AEO signals. Focus on:
 - Direct answers to common product questions
@@ -302,7 +435,6 @@ def get_seo_system_prompt(category: str) -> str:
 Return this EXACT JSON structure (fill all fields, use null if not found).
 CRITICAL SCORING RULE: All individual component `score` fields MUST be scored on a scale of 0.0 to 10.0. The `overall_seo_score` MUST be on a scale of 0 to 100.
 CRITICAL LENGTH RULE: Your output MUST NOT exceed 4000 tokens. You MUST STRICTLY limit ALL arrays (especially `recommendations`, `issues`, `quick_wins`, `brand_compliance.issues`) to a MAXIMUM of 2 items. Limit ALL string values to 1 short sentence (under 15 words). If you output more than 2 items in any array, the system will CRASH.
-For each recommendation, write an `example` field showing exactly what the fixed copy/code should look like — specific to this product's category.
 {{
   "page_title": string, "page_type": "product|category|homepage|other",
   "detected_platform": "shopify|woocommerce|magento|bigcommerce|custom",
@@ -342,7 +474,6 @@ def get_aeo_system_prompt(category: str) -> str:
 Return this EXACT JSON structure:
 CRITICAL SCORING RULE: All individual component `score` fields MUST be scored on a scale of 0.0 to 10.0. The `overall_score` MUST be on a scale of 0 to 100.
 CRITICAL LENGTH RULE: Your output MUST NOT exceed 4000 tokens. You MUST STRICTLY limit ALL arrays (especially `recommendations`, `issues`, `quick_wins`, `top_ai_queries_missed`, `gaps`, `brand_compliance.issues`) to a MAXIMUM of 2 items. Limit ALL string values to 1 short sentence. If you output more than 2 items in any array, the system will CRASH.
-For each recommendation, write an `example` field showing exactly what the fixed copy/code should look like — specific to this product's category.
 {{
   "ai_visibility_score": float, "ai_visibility_grade": "A|B|C|D|F", "category": "{cat}",
   "engine_likelihood": {{"google_ai_overview": "high|medium|low", "google_ai_overview_reason": string, "chatgpt": "high|medium|low", "chatgpt_reason": string, "perplexity": "high|medium|low", "gemini": "high|medium|low"}},

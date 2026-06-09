@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generating Beautiful PDF...</title>
+    <!-- Load JS PDF exactly like index.html does -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Load our exact formatting logic -->
+    <script src="/components/ReportDownloader.js?v=2"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f9fafb; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
+        h2 { color: #111827; }
+        p { color: #6b7280; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 id="status">Generating Beautiful PDF...</h2>
+        <p>Please wait, pulling 53 products from your JSON data.</p>
+    </div>
+
+    <script>
+        // Wait a second so the UI renders
+        setTimeout(() => {
+            fetch('/report.json')
+                .then(res => res.json())
+                .then(data => {
+                    // Extract exactly how we verified in python
+                    const resultData = data.data[0].result_data;
+                    
+                    // Call the exact same JS function that creates the pretty PDF!
+                    window.downloadSiteReport(resultData, resultData.products || [], "CeremonyKitchen_Beautiful_Report.pdf");
+                    
+                    document.getElementById('status').innerText = "✅ PDF Generated Successfully!";
+                    document.getElementById('status').style.color = "#059669";
+                    document.querySelector('p').innerText = "Check your browser's download folder.";
+                })
+                .catch(err => {
+                    document.getElementById('status').innerText = "❌ Error Generating PDF";
+                    document.getElementById('status').style.color = "#dc2626";
+                    document.querySelector('p').innerText = err.toString();
+                    console.error(err);
+                });
+        }, 1000);
+    </script>
+</body>
+</html>

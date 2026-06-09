@@ -9,7 +9,7 @@ from app.core.logging import get_logger
 
 logger = get_logger(__name__)
 
-CATEGORIES = ["fashion", "electronics", "beauty", "furniture", "supplements", "food", "sports", "jewellery", "pets", "generic"]
+CATEGORIES = ["fashion", "electronics", "beauty", "furniture", "supplements", "food", "sports", "jewellery", "pets", "jobs", "travel", "healthcare", "gaming", "media", "generic"]
 
 # Keyword-based fast classification (no LLM needed for obvious cases)
 _KEYWORD_MAP = {
@@ -21,6 +21,19 @@ _KEYWORD_MAP = {
     "food":        ["calories","nutrition","ingredients","allergen","gluten","vegan","organic","recipe","flavour","flavor","net weight","g per serving","per 100g","best before","shelf life","sugar","sodium"],
     "sports":      ["weight","resistance","reps","cardio","running","cycling","yoga","gym","workout","performance","waterproof","breathable","grip","traction","cleats","racket","bat","ball"],
     "jewellery":   ["carat","karat","gold","silver","diamond","gemstone","ring size","chain length","925","18k","14k","hallmark","certified","lab-grown","conflict-free"],
+    "jobs":       ["apply now", "job opening", "vacancy", "hiring", "full-time", "part-time",
+                   "experience required", "salary", "ctc", "lpa", "job description", "recruiter",
+                   "fresher", "remote", "hybrid", "work from home"],
+    "travel":     ["check availability", "book now", "per night", "check-in", "check-out",
+                   "nights", "guests", "itinerary", "package", "resort", "hotel", "tour",
+                   "cancellation policy", "amenities"],
+    "healthcare": ["book appointment", "consult doctor", "specialist", "clinic", "hospital",
+                   "symptoms", "diagnosis", "treatment", "mbbs", "md", "health plan",
+                   "nabh", "patient", "procedure"],
+    "gaming":     ["play now", "download game", "multiplayer", "single player", "fps", "rpg",
+                   "level", "in-game", "dlc", "patch", "early access", "platform", "system requirements"],
+    "media":      ["read more", "published", "author", "byline", "breaking news", "subscribe",
+                   "newsletter", "podcast", "episode", "season", "streaming", "watch now"],
     "pets":        ["breed","puppy","kitten","adult dog","adult cat","senior","aafco","kcal","crude protein","crude fat","crude fiber","vet","veterinary","pet food","treats","collar","leash"],
 }
 
@@ -35,7 +48,7 @@ def _fast_classify(text: str) -> str | None:
     return None
 
 _SYS = """Classify the ecommerce product page into ONE category. Return ONLY valid JSON, no prose.
-Categories: fashion, electronics, beauty, furniture, supplements, food, sports, jewellery, pets, generic
+Categories: fashion, electronics, beauty, furniture, supplements, food, sports, jewellery, pets, jobs, travel, healthcare, gaming, media, generic
 JSON: {"category": string, "sub_category": string, "confidence": float, "signals": [string]}"""
 
 async def classify_category(dom: dict, markdown: str) -> dict:

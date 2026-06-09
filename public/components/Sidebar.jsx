@@ -1,4 +1,4 @@
-window.Sidebar = function Sidebar({ activeTab, onTabChange, user }) {
+window.Sidebar = function Sidebar({ activeTab, onTabChange, user, isOpen, onClose }) {
   const onSignOut = () => {
     sessionStorage.removeItem('auth_token');
     sessionStorage.removeItem('auth_user');
@@ -6,13 +6,24 @@ window.Sidebar = function Sidebar({ activeTab, onTabChange, user }) {
   };
 
   return (
-    <div className="sidebar">
-      {/* Brand */}
-      <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:40}}>
-        <div style={{background:'var(--accent)', color:'white', width:32, height:32, borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center'}}>
-          <i className="ph ph-shopping-bag" style={{fontSize:16}}></i>
+    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+      {/* Brand & Close Button */}
+      <div style={{display:'flex', alignItems:'center', justifyContent: 'space-between', marginBottom:40}}>
+        <div style={{display:'flex', alignItems:'center', gap:12}}>
+          <div style={{background:'var(--accent)', color:'white', width:32, height:32, borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center'}}>
+            <i className="ph ph-shopping-bag" style={{fontSize:16}}></i>
+          </div>
+          <h2 style={{fontSize:18, margin:0}}>Organic360<br/><span style={{fontWeight:400, fontSize:14}}>by Clarity HQ</span></h2>
         </div>
-        <h2 style={{fontSize:18, margin:0}}>Organic360<br/><span style={{fontWeight:400, fontSize:14}}>by Clarity HQ</span></h2>
+        {onClose && (
+          <button 
+            className="mobile-close-btn" 
+            onClick={onClose}
+            style={{background:'transparent', border:'none', fontSize:24, color:'var(--text)', cursor:'pointer', display:'flex'}}
+          >
+            <i className="ph ph-x"></i>
+          </button>
+        )}
       </div>
 
       {/* Navigation */}

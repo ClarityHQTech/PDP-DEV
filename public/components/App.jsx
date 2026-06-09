@@ -48,6 +48,15 @@ const AppContent = () => {
   const [allProducts,      setAllProducts]      = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sidebarWidth,     setSidebarWidth]     = useState(260);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMobileSidebarOpen) {
+      document.body.classList.add('scroll-lock');
+    } else {
+      document.body.classList.remove('scroll-lock');
+    }
+  }, [isMobileSidebarOpen]);
 
   const abortRef = useRef(null);
 
@@ -408,7 +417,30 @@ const AppContent = () => {
   // ── Main layout ───────────────────────────────────────────────────────────
   return (
     <div className="app-layout" style={{'--sidebar-w': `${sidebarWidth}px`}}>
-      <window.Sidebar activeTab={activeTab} onTabChange={handleTabChange} user={user} />
+      <div className="mobile-header">
+        <div style={{display:'flex', alignItems:'center', gap:12}}>
+          <div style={{background:'var(--accent)', color:'white', width:32, height:32, borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center'}}>
+            <i className="ph ph-shopping-bag" style={{fontSize:16}}></i>
+          </div>
+          <h2 style={{fontSize:16, margin:0}}>Organic360</h2>
+        </div>
+        <button className="mobile-hamburger" onClick={() => setIsMobileSidebarOpen(true)}>
+          <i className="ph ph-list"></i>
+        </button>
+      </div>
+
+      <div 
+        className={`sidebar-overlay ${isMobileSidebarOpen ? 'open' : ''}`} 
+        onClick={() => setIsMobileSidebarOpen(false)}
+      ></div>
+
+      <window.Sidebar 
+        activeTab={activeTab} 
+        onTabChange={(tab) => { handleTabChange(tab); setIsMobileSidebarOpen(false); }} 
+        user={user} 
+        isOpen={isMobileSidebarOpen}
+        onClose={() => setIsMobileSidebarOpen(false)}
+      />
 
       <div
         className="sidebar-resizer"

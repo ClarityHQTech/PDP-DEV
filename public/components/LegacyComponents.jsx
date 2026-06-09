@@ -260,6 +260,23 @@ async function streamSSE(path, body, onEvent, signal) {
    VIEW: ANALYZING — Live Progress
 ══════════════════════════════════════════════════════ */
 window.AnalyzingView = function AnalyzingView({ steps=[], currentStep='', pct=0, mode='B', url='' }) {
+  const [tipIdx, setTipIdx] = useState(0);
+  
+  const tips = [
+    "Did you know? Missing H1 tags can drop ranking authority by 10%.",
+    "AI Engines like ChatGPT look for FAQ schemas to answer user questions.",
+    "Adding Alt text to images increases traffic by ~15%.",
+    "A clean heading structure (H1 → H2 → H3) helps AI summarize your pages better.",
+    "Search engines prioritize pages that load quickly and are mobile-friendly."
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTipIdx(idx => (idx + 1) % tips.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [tips.length]);
+
   const stepDefs = mode === 'B'
     ? [
         { key:'fetching',     label:'Fetching page content', icon:'ph-globe' },
@@ -278,38 +295,53 @@ window.AnalyzingView = function AnalyzingView({ steps=[], currentStep='', pct=0,
   const currentIdx = stepDefs.findIndex(s => s.key === currentStep);
 
   return (
-    <div style={{minHeight:'100vh',background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-      <div className="fade-in" style={{maxWidth:460,width:'100%',padding:24,textAlign:'center'}}>
-        <div style={{width:72,height:72,borderRadius:'50%',background:'var(--terra-lt)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 20px'}}>
-          <i className="ph ph-magnifying-glass spin" style={{fontSize:32,color:'var(--terra)'}}></i>
+    <div style={{minHeight:'100vh',background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
+      <div className="fade-in" style={{maxWidth:540,width:'100%',padding:32,textAlign:'center',background:'var(--surface)',borderRadius:16,boxShadow:'0 10px 40px rgba(0,0,0,0.05)',border:'1px solid var(--border)'}}>
+        <div style={{width:64,height:64,borderRadius:'50%',background:'var(--terra-lt)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 20px'}}>
+          <i className="ph ph-magnifying-glass spin" style={{fontSize:28,color:'var(--terra)'}}></i>
         </div>
-        <h2 className="serif" style={{fontSize:24,fontWeight:700,marginBottom:6}}>
-          {mode === 'A' ? 'Auditing Site…' : 'Analyzing PDP…'}
+        <h2 className="serif" style={{fontSize:24,fontWeight:700,marginBottom:8,color:'var(--ink)'}}>
+          {mode === 'A' ? 'Deep Site Audit in Progress...' : 'Analyzing Product Page...'}
         </h2>
-        <p style={{fontSize:13,color:'var(--muted)',marginBottom:4}}>
-          {mode === 'A' ? 'Crawling categories & products' : 'Running SEO + AEO analysis'}
+        <p style={{fontSize:14,color:'var(--muted)',marginBottom:6}}>
+          {mode === 'A' ? 'Crawling categories & running AI/SEO analysis on all products' : 'Running SEO + AEO analysis'}
         </p>
-        {url && <p style={{fontSize:11,color:'var(--steel)',wordBreak:'break-all',marginBottom:24}}>{url}</p>}
+        
+        {/* Safe to leave message */}
+        {mode === 'A' && (
+          <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(234,179,8,0.1)',border:'1px solid rgba(234,179,8,0.2)',padding:'6px 14px',borderRadius:20,fontSize:13,color:'var(--stone)',marginBottom:24,marginTop:6}}>
+            <i className="ph ph-warning-circle" style={{color:'#d97706'}}></i>
+            <span>Takes 3-5 mins. <strong>Leave this page open</strong> and do your other work. Come back to see the results!</span>
+          </div>
+        )}
+
+        {url && <p style={{fontSize:12,color:'var(--steel)',wordBreak:'break-all',marginBottom:24,opacity:0.8}}>{url}</p>}
 
         {/* Progress bar */}
-        <div style={{width:'100%', height:6, background:'var(--border)', borderRadius:3, marginBottom:28, overflow:'hidden'}}>
-          <div style={{height:'100%', width:`${pct || 0}%`, background:'var(--terra)', borderRadius:3, transition:'width 0.3s ease'}}></div>
+        <div style={{position:'relative',marginBottom:32}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:8,fontSize:13,fontWeight:600,color:'var(--dark)'}}>
+            <span>Overall Progress</span>
+            <span>{pct || 0}%</span>
+          </div>
+          <div style={{width:'100%', height:8, background:'var(--border)', borderRadius:4, overflow:'hidden'}}>
+            <div style={{height:'100%', width:`${pct || 0}%`, background:'var(--terra)', borderRadius:4, transition:'width 0.4s ease-out'}}></div>
+          </div>
         </div>
 
-        {/* Steps */}
-        <div style={{textAlign:'left'}}>
+        {/* Live Terminal / Steps Log */}
+        <div style={{background:'rgba(0,0,0,0.02)',border:'1px solid var(--border)',borderRadius:12,padding:20,textAlign:'left',marginBottom:24,maxHeight:240,overflowY:'auto'}}>
           {stepDefs.map((s, i) => {
             const done = i < currentIdx || currentStep === 'done';
             const active = s.key === currentStep && currentStep !== 'done';
             return (
-              <div key={s.key} style={{display:'flex',alignItems:'center',gap:12,padding:'8px 0',borderBottom:'1px solid var(--border-lt)'}}>
-                <div style={{width:28,height:28,borderRadius:'50%',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',
+              <div key={s.key} style={{display:'flex',alignItems:'center',gap:12,padding:'8px 0',opacity: (done||active)?1:0.4}}>
+                <div style={{width:24,height:24,borderRadius:'50%',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',
                   background: done ? 'var(--green-lt)' : active ? 'var(--terra-lt)' : 'var(--border-lt)'}}>
                   {done
-                    ? <i className="ph ph-check" style={{fontSize:13,color:'var(--green)'}}></i>
+                    ? <i className="ph ph-check" style={{fontSize:12,color:'var(--green)'}}></i>
                     : active
-                    ? <i className={`ph ${s.icon} spin`} style={{fontSize:13,color:'var(--terra)'}}></i>
-                    : <i className={`ph ${s.icon}`} style={{fontSize:13,color:'var(--muted)'}}></i>
+                    ? <i className={`ph ${s.icon} spin`} style={{fontSize:12,color:'var(--terra)'}}></i>
+                    : <i className={`ph ${s.icon}`} style={{fontSize:12,color:'var(--muted)'}}></i>
                   }
                 </div>
                 <span style={{fontSize:13,color: done ? 'var(--green)' : active ? 'var(--dark)' : 'var(--muted)', fontWeight: active ? 600 : 400}}>
@@ -320,13 +352,26 @@ window.AnalyzingView = function AnalyzingView({ steps=[], currentStep='', pct=0,
               </div>
             );
           })}
+          {/* Live stream messages terminal effect */}
+          {steps.length > 0 && (
+            <div style={{marginTop:16,paddingTop:16,borderTop:'1px dashed var(--border)',fontFamily:'monospace',fontSize:12,color:'var(--stone)',display:'flex',flexDirection:'column',gap:6}}>
+              {steps.slice(-3).map((s,i) => (
+                <div key={i} style={{opacity: i === steps.slice(-3).length - 1 ? 1 : 0.6}}>
+                  <span style={{color:'var(--terra)',marginRight:8}}>➜</span>{s}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {steps.length > 0 && (
-          <div style={{marginTop:16,fontSize:11,color:'var(--muted)',textAlign:'left'}}>
-            {steps.slice(-2).map((s,i) => <div key={i}>{s}</div>)}
+        {/* Rotating Educational Tips */}
+        <div style={{height:40,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,color:'var(--stone)',fontStyle:'italic'}}>
+          <div key={tipIdx} className="fade-in" style={{display:'flex',alignItems:'center',gap:8}}>
+            <i className="ph ph-lightbulb" style={{color:'#eab308',fontSize:16}}></i>
+            <span>{tips[tipIdx]}</span>
           </div>
-        )}
+        </div>
+
       </div>
     </div>
   );
@@ -1068,7 +1113,9 @@ window.ModeBReport = function ModeBReport({ result={}, url='', onBack, onPrev, o
               <div style={{fontWeight:700,fontSize:15,color:'var(--ink)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{pageTitle}</div>
               <div style={{fontSize:11,color:'var(--muted)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{url}</div>
             </div>
-
+            <button className="btn" style={{padding:'6px 14px',background:'var(--terra)',color:'#fff',border:'none',borderRadius:6,display:'flex',alignItems:'center',gap:6,cursor:'pointer'}} onClick={() => window.downloadProductReport(result)}>
+              <i className="ph ph-download-simple"></i> Download Report
+            </button>
           </div>
           {/* Score chips */}
           <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
@@ -1153,7 +1200,12 @@ window.SiteOverviewView = function SiteOverviewView({ siteData={}, products=[], 
           </button>
           <i className="ph ph-caret-right" style={{color:'var(--muted)'}}></i>
           <div style={{fontWeight:600, fontSize:15}}>{siteData.domain}</div>
-          <div style={{marginLeft:'auto', fontSize:11,color:'var(--muted)'}}>Site Audit · Mode A</div>
+          <div style={{marginLeft:'auto', display:'flex', alignItems:'center', gap:12}}>
+            <div style={{fontSize:11,color:'var(--muted)'}}>Site Audit · Mode A</div>
+            <button className="btn" style={{padding:'6px 14px',background:'var(--terra)',color:'#fff',border:'none',borderRadius:6,display:'flex',alignItems:'center',gap:6,cursor:'pointer'}} onClick={() => window.downloadSiteReport(siteData, products)}>
+              <i className="ph ph-download-simple"></i> Download Report
+            </button>
+          </div>
         </div>
       </div>
 

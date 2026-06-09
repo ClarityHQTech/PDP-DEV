@@ -37,7 +37,7 @@ class Settings(BaseSettings):
 
     # Models
     model_haiku: str = "claude-haiku-4-5-20251001"
-    model_gemini: str = "gemini-2.5-flash-lite-preview-06-17"
+    model_gemini: str = "gemini-3.1-flash-lite"
 
     # CORS
     allowed_origins: str = "http://localhost:3000,http://localhost:8000,http://127.0.0.1:8000,https://organic360.clarityhq.ai"
