@@ -36,6 +36,14 @@
       "destination": "/api/index.py"
     },
     {
+      "source": "/components/(.*)",
+      "destination": "/public/components/$1"
+    },
+    {
+      "source": "/index.css",
+      "destination": "/public/index.css"
+    },
+    {
       "source": "/(.*)",
       "destination": "/public/index.html"
     }
