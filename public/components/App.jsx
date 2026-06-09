@@ -259,7 +259,7 @@ const AppContent = () => {
         setView(VIEWS.ANALYZING);
         let finalResult = null;
 
-        const RENDER_URL = window.location.hostname.includes('localhost') ? '' : 'https://organic360-api.onrender.com';
+        const RENDER_URL = window.location.hostname.includes('localhost') ? '' : 'https://pdp-dev-2.onrender.com';
         await window.streamSSE(`${RENDER_URL}/api/v1/analyze/pdp/stream`, { url }, t, (event, data) => {
           if (event === 'progress') {
             setAnalyzeStep(data.step || '');
@@ -284,7 +284,7 @@ const AppContent = () => {
         let currentSiteData = null;
         const collectedProducts = [];
 
-        const RENDER_URL = window.location.hostname.includes('localhost') ? '' : 'https://organic360-api.onrender.com';
+        const RENDER_URL = window.location.hostname.includes('localhost') ? '' : 'https://pdp-dev-2.onrender.com';
         await window.streamSSE(`${RENDER_URL}/api/v1/site/audit/stream`, { url }, t, (event, data) => {
           if (event === 'progress') {
             setAnalyzeStep(data.step || 'crawling');
