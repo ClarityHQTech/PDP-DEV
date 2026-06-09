@@ -120,14 +120,13 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Session expired. Please sign in again.",
         )
-    except jwt.PyJWTError:
-        pass
-
-    if settings.clerk_enabled:
-        payload = _verify_jwt(token)
-        return ClerkUser(payload)
+    except jwt.PyJWTError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"JWT Verification Failed: {str(e)}",
+        )
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid session. Please sign in again.",
+        detail="Invalid session format or missing 'iss' claim.",
     )
